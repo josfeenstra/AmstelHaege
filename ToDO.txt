@@ -1,0 +1,10 @@
+centralizeer alle screenshots bij de bijpassende folders / algorithms 
+
+maak met readme.md files een goed lopend verhaal 
+
+haal gemiddeld aantal iteraties, mapwaarde lb en mapwaarde daadwerkelijk uit het jos / unorthodox algorithm
+- schrijf conclusie, maak aanleiding tot joine effort
+in joined effort, laat zien dat je de beste unorthodox algorithm map hebt gepakt als basis voor een SA variant van het Tara algorithm 
+- laat zien dat de temperatuur wordt bepaald door hoe ver de mapwaarde daalt, en met welk type huis je te maken hebt 
+- maak disclaimers, die vertellen dat je bewust bent dat het erg manual is / niet algorithmic. 
+- toon beste resultaat
