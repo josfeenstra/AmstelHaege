@@ -1,4 +1,6 @@
-
+"""
+TIloadmap - simply load a map and show it
+"""
 from dependencies.helpers import *
 
 # get arguments

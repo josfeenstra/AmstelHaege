@@ -1,34 +1,19 @@
 """
-NAME    jos's Algorithm
+NAME    Unorthodox Algorithm
 
 AUTHORS jos feenstra
 
-DESC    MAKING THE MAP DANCE
-
-TODO
-        are constraints satified
-
-OPLOSMETHODE:
-- UNORTODOX:
-    1. bouw een sterke kaart via unorthodox
-    2. gebruik simulated annealing & greedy hillclimbers
-        - gebuikt house swapper
-        - gebruik step mover
-
-- ORTHODOX:
-    1. hillclimb algorithm cycle
+DESC    Pushes the lowerbound of the map value up
 
 
-
-water:
-    constraints relaxation
 
 """
-
+import sys
+sys.path.append("..")
 from dependencies.helpers import *
 
 # choose 0, 1 or 2 to get 20, 40 or 60 ho   uses
-SELECTED_HOUSE_COUNT = HOUSE_COUNT[2]
+SELECTED_HOUSE_COUNT = HOUSE_COUNT[0]
 
 # runtime controllers
 MACRO_LIMIT = 650
@@ -36,12 +21,12 @@ LIMIT_MAP_REBUILT = 10000
 LIMIT_HOUSE_RELOCATE = 300
 
 # algorithm controls
-START_AT = 240
+START_AT = 0
 # PRINT_AT = 1
 
 # Path to save json files
-jsonPATH = "C:\\Users\\Jos\\GitHub\\UrbanPlanning\\Rhino\\json"
-jsonNAME = "josBest60"
+jsonPATH = "C:\\Users\\Jos\\GitHub\\AmstelHaegeNew\\Saves\\json"
+jsonNAME = "test"
 
 """
 build a correct random map
@@ -66,14 +51,6 @@ def main():
                       [NONE,    4,    1],  # BRITAIN
                       [   3,    2,    1],  # EUROPE
                       [   1,    1,    1]]  # RUSIA
-    #
-    # ringPriorities = [[NONE, NONE,    1],  # ONLY mansions
-    #                   [NONE,    1, NONE],  # ONLY bungalows
-    #                   [   1, NONE, NONE]]  # ONLY family homes
-
-    # ringPriorities = [[NONE,    1,    1],  # EXCLUDE mansions
-    #                   [NONE,    4,    1],  # EXCLUDE bungalows
-    #                   [   3,    2,    1],  # EXCLUDE family homes
 
     ringPriorities = [[NONE , NONE,    1]]  # a certain division
 
@@ -142,34 +119,12 @@ def main():
                 mapIterations = map1.rebuild(LIMIT_MAP_REBUILT, LIMIT_HOUSE_RELOCATE)
                 allMapIts.append(mapIterations)
 
-                # mapiterations ran out of steam, decide if we should quit or adapt
+                # mapiterations ran out of steam
                 if mapIterations <= -1:
 
-                    # fix the map, then continue
+                    # fix the map using ALOT of iterations, then continue
                     map1.rebuild(LIMIT_MAP_REBUILT * 2, LIMIT_HOUSE_RELOCATE)
-
                     break
-
-                    # if theNextToDelete == 0:
-                    #     print("we're done!!")
-                    #
-                    #     # make sure the map quits with a valid map
-                    #     map1.rebuild(LIMIT_MAP_REBUILT * 10, LIMIT_HOUSE_RELOCATE)
-                    #     break
-                    #
-                    # # else, exclude mansions / bungalows
-                    # print("excluding mansions/bungalows...")
-                    # map1.excludeFromHouseData(theNextToDelete)
-                    # #
-                    # # some annealing
-                    # for house in map1.house:
-                    #     if house.type.integer == theNextToDelete:
-                    #         house.changeRingsBy(-2)
-                    #
-                    # theNextToDelete -= 1
-
-                    # reset map iterations
-                    mapIterations = 0
 
             else:
                 allMapIts.append(0)
@@ -184,9 +139,9 @@ def main():
             iterations.append(i)
 
             # update for rhino visualisation
-            # map1.addWater()
+            map1.addWater()
             map1.saveJSON(jsonPATH, jsonNAME)
-            # map1.waterBody.clear()
+            map1.waterBody.clear()
 
             # if the map
             if mapVal > global_best_score:
@@ -201,20 +156,15 @@ def main():
 
     plt.show()
 
-    #
-    # npIterations = np.array(iterations)
-    # npAllMapIts = np.array(allMapIts)
-    #
-    # plt.plot(npIterations, npAllMapIts, '-g')
-    #
-    # plt.show()
+
+    npIterations = np.array(iterations)
+    npAllMapIts = np.array(allMapIts)
+
+    plt.plot(npIterations, npAllMapIts, '-g')
+
+    plt.show()
 
 
-    # cherry(map1, 1000)
-    # orthodox(map1, 101010,10100,100)
-    # if something
-    #     simAnnealing(map1, 1000, 100)
-    #
 
 
 
