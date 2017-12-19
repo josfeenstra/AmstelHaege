@@ -4,14 +4,20 @@ NAME    stepmoverSimAnn.py
 AUTHORS Jos Feenstra
         Christiaan Wewer
 
-DESC    improve a map by slighty worsening it, then slightly making it better 
-NOTE
+DESC    improve a map by slighty worsening it, then slightly making it better
+
+NOTE    Even tho this agorithm's name contains Simulated Annealing, i think what
+        its doing here is more like plant propegation than anything else.
 
 """
 from dependencies.helpers import *
+from copy import copy
 
 fileName = "33127104_cherrymover"
 dirPath = "C:\\Users\\Jos\\GitHub\\UrbanPlanning\\Rhino\\json"
+NUMBER_OF_CHILDS = 2
+MAX_NUMBER_CHILDS = 10 * NUMBER_OF_CHILDS
+
 
 def main():
 
@@ -27,7 +33,8 @@ def main():
     map1.plot()
     map1.waterBody.clear()
 
-    cherryImprove(map1)
+    
+    cherryImproveSA(map1)
 
     # show result
     map1.addWater()
@@ -78,6 +85,18 @@ def simAnnealing(temperature):
     else:
         return False
 
+def makeChildFrom(aMap):
+
+    # copy map
+    Childmap = copy(aMap)
+
+    # worsen map
+
+    # improve map
+    cherryImprove
+
+    # return map
+
 def cherryImproveSA(aMap):
     """
     keeps improving the house locations of 'aMap', until they cant be improved anymore
@@ -93,18 +112,22 @@ def cherryImproveSA(aMap):
 
     reverse = aMap.house
     simanneal = False
+
     while(True):
         print("opnieuw")
         for house in reverse:
             # move 1 house to its move valuable position
             others = [h.boundary for h in aMap.house if h is not house]
             if simanneal:
+                # worsen the house slightly
                 print("sim")
                 moveToIdealPositionSA(house, aMap, increments, others)
             else:
+                # improve the house to the best of its ability
                 print("greedy")
                 moveToIdealPosition(house, aMap, increments, others)
 
+        # make sure the algorithm swaps strategy after
         if simanneal:
             simanneal = False
         else:
@@ -112,11 +135,6 @@ def cherryImproveSA(aMap):
 
         # break if the map value is not improving anymore
         newValue = aMap.calculateValue()
-
-        highscore = 19000000
-        # print at a certain point
-        if printAt(aMap, newValue, highscore):
-            highscore = newValue
 
         if originalValue < newValue:
             # map has improved, redo proccess
@@ -153,22 +171,15 @@ def cherryImprove(aMap):
         # break if the map value is not improving anymore
         newValue = aMap.calculateValue()
 
-        highscore = 19000000
-        # print at a certain point
-        if printAt(aMap, newValue, highscore):
-            highscore = newValue
-
         if originalValue < newValue:
             # map has improved, redo proccess
             originalValue = newValue
         elif originalValue == newValue:
-            # map has not improved
-            print("peak reached, we need more sim annealing!!")
+            # map has not improved, stop process
             break
         else:
-            print("the cherry algorithm is doing weird things... new value is lower for some reason")
+            print("WARNING: map value is worse than before")
             break
-
 
 def moveToIdealPosition(house, aMap, increments, otherBoundaries):
     """

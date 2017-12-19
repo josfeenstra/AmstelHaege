@@ -22,7 +22,6 @@ Further explanation of these algorithms can be found in their corresponding fold
 
 ## Getting Started
 
-
 #### algorithms
     this folder holds all algorithms
 #### algorithms/dependencies
